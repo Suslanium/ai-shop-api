@@ -12,6 +12,22 @@ export const options = {
 
 const BASE_URL = __ENV.BASE_URL || "http://app:8080";
 
+function waitForReady() {
+  const deadline = Date.now() + 60 * 1000;
+  while (Date.now() < deadline) {
+    const res = http.get(`${BASE_URL}/api/analytics/counts`);
+    if (res.status === 200) {
+      return;
+    }
+    sleep(1);
+  }
+  throw new Error("Application did not become ready within 60s");
+}
+
+export function setup() {
+  waitForReady();
+}
+
 export default function () {
   const endpoints = [
     "/api/hdds",
