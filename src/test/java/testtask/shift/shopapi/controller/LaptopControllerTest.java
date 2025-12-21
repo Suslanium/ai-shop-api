@@ -12,6 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import testtask.shift.shopapi.model.laptop.Laptop;
 import testtask.shift.shopapi.model.laptop.LaptopSize;
 import testtask.shift.shopapi.service.LaptopService;
+import testtask.shift.shopapi.service.UsageStatsService;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -37,6 +38,9 @@ class LaptopControllerTest {
 
     @MockBean
     private LaptopService laptopService;
+
+    @MockBean
+    private UsageStatsService usageStatsService;
 
     @Test
     void getLaptops_returnsList() throws Exception {

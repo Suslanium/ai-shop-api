@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import testtask.shift.shopapi.model.hdd.HardDrive;
 import testtask.shift.shopapi.service.HardDriveService;
+import testtask.shift.shopapi.service.UsageStatsService;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -36,6 +37,9 @@ class HardDriveControllerTest {
 
     @MockBean
     private HardDriveService hardDriveService;
+
+    @MockBean
+    private UsageStatsService usageStatsService;
 
     @Test
     void getHardDrives_returnsList() throws Exception {

@@ -26,7 +26,7 @@ jobs:
         run: echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
       - name: Build and test (docker compose)
-        run: docker compose -f docker-compose.ci.yml up --build --abort-on-container-exit --exit-code-from tests
+        run: docker compose -f docker-compose.test.yml up --build --abort-on-container-exit --exit-code-from tests
 
       - name: Log in to GHCR
         uses: docker/login-action@v3

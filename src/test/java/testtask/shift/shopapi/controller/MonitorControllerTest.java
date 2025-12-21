@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import testtask.shift.shopapi.model.monitor.Monitor;
 import testtask.shift.shopapi.service.MonitorService;
+import testtask.shift.shopapi.service.UsageStatsService;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -36,6 +37,9 @@ class MonitorControllerTest {
 
     @MockBean
     private MonitorService monitorService;
+
+    @MockBean
+    private UsageStatsService usageStatsService;
 
     @Test
     void getMonitors_returnsList() throws Exception {
