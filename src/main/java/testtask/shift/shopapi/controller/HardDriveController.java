@@ -1,13 +1,19 @@
 package testtask.shift.shopapi.controller;
 
-import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.*;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import testtask.shift.shopapi.model.hdd.HardDrive;
 import testtask.shift.shopapi.service.HardDriveService;
 
@@ -25,8 +31,7 @@ public class HardDriveController {
             @ApiResponse(responseCode = "200", description = "HDDs list",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = HardDrive.class))))})
     @GetMapping(value = {"", "/"}, produces = "application/json")
-    public @NotNull
-    Iterable<HardDrive> getHardDrives() {
+    public @NotNull Iterable<HardDrive> getHardDrives() {
         return hardDriveService.getAllHardDrives();
     }
 
@@ -56,7 +61,7 @@ public class HardDriveController {
                     content = @Content(schema = @Schema(implementation = HardDrive.class)))})
     @PutMapping(value = "/{id}", produces = "application/json")
     public HardDrive editHardDrive(@PathVariable long id,
-                                   @RequestBody @org.jetbrains.annotations.NotNull HardDrive newHardDrive) {
+                                   @RequestBody @NotNull HardDrive newHardDrive) {
         hardDriveService.getHardDrive(id);
         newHardDrive.setId(id);
         return hardDriveService.save(newHardDrive);

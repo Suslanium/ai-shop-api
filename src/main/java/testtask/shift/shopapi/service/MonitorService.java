@@ -1,6 +1,6 @@
 package testtask.shift.shopapi.service;
 
-import com.sun.istack.NotNull;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.validation.annotation.Validated;
 import testtask.shift.shopapi.model.monitor.Monitor;
 

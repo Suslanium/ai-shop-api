@@ -1,6 +1,6 @@
 package testtask.shift.shopapi.controller;
 
-import com.sun.istack.NotNull;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

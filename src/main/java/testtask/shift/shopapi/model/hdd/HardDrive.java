@@ -24,6 +24,5 @@ public class HardDrive extends Product {
     }
 
     public HardDrive() {
-
     }
 }

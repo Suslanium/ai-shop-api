@@ -24,6 +24,5 @@ public class Monitor extends Product {
     }
 
     public Monitor() {
-
     }
 }

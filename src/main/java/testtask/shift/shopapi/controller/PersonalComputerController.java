@@ -1,13 +1,19 @@
 package testtask.shift.shopapi.controller;
 
-import com.sun.istack.NotNull;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import org.springframework.web.bind.annotation.*;
+import org.jetbrains.annotations.NotNull;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import testtask.shift.shopapi.model.pc.PersonalComputer;
 import testtask.shift.shopapi.service.PersonalComputerService;
 
@@ -25,8 +31,7 @@ public class PersonalComputerController {
             @ApiResponse(responseCode = "200", description = "Personal computers list",
                     content = @Content(array = @ArraySchema(schema = @Schema(implementation = PersonalComputer.class))))})
     @GetMapping(value = {"", "/"}, produces = "application/json")
-    public @NotNull
-    Iterable<PersonalComputer> getPersonalComputers() {
+    public @NotNull Iterable<PersonalComputer> getPersonalComputers() {
         return personalComputerService.getAllPersonalComputers();
     }
 
@@ -56,7 +61,7 @@ public class PersonalComputerController {
                     content = @Content(schema = @Schema(implementation = PersonalComputer.class)))})
     @PutMapping(value = "/{id}", produces = "application/json")
     public PersonalComputer editPersonalComputer(@PathVariable long id,
-                                                 @RequestBody @org.jetbrains.annotations.NotNull PersonalComputer newPersonalComputer) {
+                                                 @RequestBody @NotNull PersonalComputer newPersonalComputer) {
         personalComputerService.getPersonalComputer(id);
         newPersonalComputer.setId(id);
         return personalComputerService.save(newPersonalComputer);
