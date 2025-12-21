@@ -22,6 +22,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set image name
+        run: echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
+
       - name: Build and test (docker compose)
         run: docker compose -f docker-compose.ci.yml up --build --abort-on-container-exit --exit-code-from tests
 
@@ -37,7 +40,7 @@ jobs:
         with:
           context: .
           push: true
-          tags: ghcr.io/${{ github.repository }}:latest,ghcr.io/${{ github.repository }}:${{ github.sha }}
+          tags: ${{ env.IMAGE_NAME }}:latest,${{ env.IMAGE_NAME }}:${{ github.sha }}
 
       - name: Upload deploy compose (optional)
         if: ${{ env.SSH_HOST != '' }}
@@ -61,7 +64,7 @@ jobs:
             mkdir -p "${{ env.DEPLOY_PATH }}"
             cd "${{ env.DEPLOY_PATH }}"
             mv docker-compose.deploy.yml docker-compose.yml
-            export GITHUB_REPOSITORY="${{ github.repository }}"
+            export IMAGE_NAME=$(echo "ghcr.io/${{ github.repository }}" | tr '[:upper:]' '[:lower:]')
             docker login ghcr.io -u ${{ github.actor }} -p ${{ env.GHCR_PAT }}
             docker compose pull
             docker compose up -d
