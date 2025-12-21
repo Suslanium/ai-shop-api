@@ -3,8 +3,6 @@ name: ci
 on:
   push:
     branches: ["master"]
-  pull_request:
-    branches: ["master"]
 
 permissions:
   contents: read
@@ -13,6 +11,12 @@ permissions:
 jobs:
   build-test-deploy:
     runs-on: ubuntu-latest
+    env:
+      SSH_HOST: ${{ secrets.SSH_HOST }}
+      SSH_USER: ${{ secrets.SSH_USER }}
+      SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+      DEPLOY_PATH: ${{ secrets.DEPLOY_PATH }}
+      GHCR_PAT: ${{ secrets.GHCR_PAT }}
 
     steps:
       - name: Checkout
@@ -36,28 +40,28 @@ jobs:
           tags: ghcr.io/${{ github.repository }}:latest,ghcr.io/${{ github.repository }}:${{ github.sha }}
 
       - name: Upload deploy compose (optional)
-        if: ${{ secrets.SSH_HOST != '' }}
+        if: ${{ env.SSH_HOST != '' }}
         uses: appleboy/scp-action@v0.1.7
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USER }}
+          key: ${{ env.SSH_PRIVATE_KEY }}
           source: docker-compose.deploy.yml
-          target: ${{ secrets.DEPLOY_PATH }}
+          target: ${{ env.DEPLOY_PATH }}
 
       - name: Deploy with docker compose (optional)
-        if: ${{ secrets.SSH_HOST != '' }}
+        if: ${{ env.SSH_HOST != '' }}
         uses: appleboy/ssh-action@v1.0.3
         with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
+          host: ${{ env.SSH_HOST }}
+          username: ${{ env.SSH_USER }}
+          key: ${{ env.SSH_PRIVATE_KEY }}
           script: |
             set -e
-            mkdir -p "${{ secrets.DEPLOY_PATH }}"
-            cd "${{ secrets.DEPLOY_PATH }}"
+            mkdir -p "${{ env.DEPLOY_PATH }}"
+            cd "${{ env.DEPLOY_PATH }}"
             mv docker-compose.deploy.yml docker-compose.yml
             export GITHUB_REPOSITORY="${{ github.repository }}"
-            docker login ghcr.io -u ${{ github.actor }} -p ${{ secrets.GHCR_PAT }}
+            docker login ghcr.io -u ${{ github.actor }} -p ${{ env.GHCR_PAT }}
             docker compose pull
             docker compose up -d
